@@ -11,6 +11,8 @@ public interface StockRepository {
 	public Stock updateStock(Stock stock);
 	public int deleteStock(int id);
 	public Stock addStock(Stock stock);
+	//public List<Stock> StockPresent(String stockTicker);
+	public String buyStock(String stockTicker, int volume);
 	
 
 }

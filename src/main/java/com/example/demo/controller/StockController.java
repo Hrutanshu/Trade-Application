@@ -44,9 +44,15 @@ public class StockController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public int deleteStock(@PathVariable int id) {
+	public int deleteStock(@PathVariable ("id") int id) {
 		return service.deleteStock(id);
 	}
+	
+	
+	 @GetMapping(value = "/buy/{stockTicker}/{volume}") 
+	 public String BuyStock(@PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume) { 
+		 return service.BuyStock(stockTicker, volume); }
+	 
 
 }
 

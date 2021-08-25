@@ -36,6 +36,17 @@ public class StockService {
 	{
 		return repository.deleteStock(id);
 	}
+
+	public String BuyStock(String stockTicker, int volume) {
+		// TODO Auto-generated method stub
+		return repository.buyStock(stockTicker, volume);
+	}
 	
+	/*
+	 * public List<Stock> BuyStock(String stockTicker) { return
+	 * repository.StockPresent(stockTicker);
+	 * 
+	 * }
+	 */
 	
 }
