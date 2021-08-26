@@ -189,7 +189,7 @@ public class MySqlRepo implements StockRepository{
 		{
 			return new Holding(rs.getInt("ID"),
 					rs.getString("StockTicker"),
-					rs.getDouble("Price"),
+					rs.getInt("Price"),
 					rs.getInt("volume"));
 		}
 	}
@@ -201,7 +201,7 @@ public class MySqlRepo implements StockRepository{
 			return new History(rs.getInt("ID"),
 					rs.getString("DateTime"),
 					rs.getString("StockTicker"),
-					rs.getDouble("Price"),
+					rs.getInt("Price"),
 					rs.getInt("volume"),
 					rs.getString("BuyOrSell"));
 		}
@@ -215,7 +215,7 @@ public class MySqlRepo implements StockRepository{
 			return new Stock(rs.getInt("ID"),
 					rs.getString("Company"),
 					rs.getString("StockTicker"),
-					rs.getDouble("Price"),
+					rs.getInt("Price"),
 					rs.getInt("volume"));
 		}
 	}

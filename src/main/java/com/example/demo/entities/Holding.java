@@ -4,7 +4,7 @@ public class Holding {
 
 	private int id;
 	private String stockTicker;
-	private double price;
+	private int price;
 	private int volume;
 	
 	public Holding()
@@ -12,7 +12,7 @@ public class Holding {
 		
 	}
 	
-	public Holding(int id, String stockTicker, double price, int volume) {
+	public Holding(int id, String stockTicker, int price, int volume) {
 		super();
 		this.id = id;
 		this.stockTicker = stockTicker;
@@ -34,7 +34,7 @@ public class Holding {
 	public double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public int getVolume() {

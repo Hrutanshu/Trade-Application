@@ -5,7 +5,7 @@ public class Stock {
 	private int id;
 	private String company;
 	private String stockTicker;
-	private double price;
+	private int price;
 	private int volume;
 	
 	public Stock()
@@ -13,7 +13,7 @@ public class Stock {
 		
 	}
 	
-	public Stock(int id, String company, String stockTicker, double price, int volume) {
+	public Stock(int id, String company, String stockTicker, int price, int volume) {
 		super();
 		this.id = id;
 		this.company = company;
@@ -35,10 +35,10 @@ public class Stock {
 	public void setStockTicker(String stockTicker) {
 		this.stockTicker = stockTicker;
 	}
-	public double getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public int getVolume() {

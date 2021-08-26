@@ -4,7 +4,7 @@ public class History {
 
 	private int id;
 	private String stockTicker;
-	private double price;
+	private int price;
 	private int volume;
 	private String DateTime;
 	private String BuyOrSell;
@@ -14,7 +14,7 @@ public class History {
 	{	
 	}
 	
-	public History(int id, String dateTime, String stockTicker, double price, int volume, String buyOrSell) {
+	public History(int id, String dateTime, String stockTicker, int price, int volume, String buyOrSell) {
 		super();
 		this.id = id;
 		this.stockTicker = stockTicker;
@@ -55,7 +55,7 @@ public class History {
 	public double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public int getVolume() {
