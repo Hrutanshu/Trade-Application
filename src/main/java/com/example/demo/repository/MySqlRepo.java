@@ -1,6 +1,10 @@
 package com.example.demo.repository;
 
 import java.sql.ResultSet;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,19 +28,7 @@ public class MySqlRepo implements StockRepository{
 		return template.query(sql,new StockRowMapper());
 	
 		}
-	
-	
-		/*
-		 * @Override public List<Stock> StockPresent(String stockTicker) { // TODO
-		 * Auto-generated method stub
-		 * 
-		 * //String sql = " SELECT COUNT(1) FROM Stocks s WHERE s.stockTicker = ?";
-		 * 
-		 * return template.query("SELECT COUNT(id) FROM Stocks WHERE stockTicker = ?",
-		 * new StockRowMapper(),stockTicker);
-		 * 
-		 * }
-		 */
+
 	@Override
 	public Stock getStockById(int id) {
 		// TODO Auto-generated method stub
@@ -97,10 +89,8 @@ public class MySqlRepo implements StockRepository{
 		int stockPresent =template.queryForObject(sql1, Integer.class, stockTicker);
 
 		if(stockPresent==0)
-		{
-			String result= "Stock not present";
-			return result;
-		}
+			return "Stock not present";
+		
 		
 		String sql2= "SELECT VOLUME FROM STOCKS WHERE STOCKTICKER=?";
 		int dbVolume=template.queryForObject(sql2, Integer.class, stockTicker);
@@ -133,18 +123,20 @@ public class MySqlRepo implements StockRepository{
 				template.update(sql5, stockTicker, volume);
 			}
 
-			String sql6 = "INSERT INTO History (StockTicker, Volume, BuyOrSell) VALUES(?,?,?)";
-			template.update(sql6, stockTicker, volume, "Buy");
+			
+			Date d1 = new Date();
+			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			String date= sdf.format(d1);
+			
+			String sql6 = "INSERT INTO History (DateTime,StockTicker, Volume, BuyOrSell) VALUES(?,?,?,?)";
+			template.update(sql6, date, stockTicker, volume, "Buy");
 		
-			String result="Stocks Buied Successfully";
-			return result;
+			return "Stocks Bought Successfully";
 		}
 		
 		else
-		{
-				String result= "insufficient volume";
-				return result;
-	    }
+			return "Insufficient Volume";
+	    
 
 		
 	}
