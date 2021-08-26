@@ -1,28 +1,24 @@
 package com.example.demo.entities;
 
-public class Stock {
+public class Holding {
 
 	private int id;
-	private String company;
 	private String stockTicker;
 	private double price;
 	private int volume;
 	
-	public Stock()
+	public Holding()
 	{
 		
 	}
 	
-	public Stock(int id, String company, String stockTicker, double price, int volume) {
+	public Holding(int id, String stockTicker, double price, int volume) {
 		super();
 		this.id = id;
-		this.company = company;
 		this.stockTicker = stockTicker;
 		this.price = price;
 		this.volume = volume;
 	}
-
-
 	public int getId() {
 		return id;
 	}
@@ -47,14 +43,4 @@ public class Stock {
 	public void setVolume(int volume) {
 		this.volume = volume;
 	}
-	public String getCompany() {
-		return company;
-	}
-
-
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
-	
 }

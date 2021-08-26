@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entities.History;
+import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
 import com.example.demo.service.StockService;
-
 
 @RestController
 @RequestMapping("api/stock")
@@ -48,12 +49,26 @@ public class StockController {
 		return service.deleteStock(id);
 	}
 	
-	
 	 @GetMapping(value = "/buy/{stockTicker}/{volume}") 
 	 public String BuyStock(@PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume) { 
-		 return service.BuyStock(stockTicker, volume); }
+		 return service.BuyStock(stockTicker, volume); 
+	}
 	 
-
+	 @GetMapping(value = "/sell/{stockTicker}/{volume}") 
+	 public String SellStock(@PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume) { 
+		 return service.SellStock(stockTicker, volume); 
+	}
+	 
+	 @GetMapping(value = "/holdings") 
+	 public List<Holding>  Holdings() { 
+		 return service.holdings(); 
+	}
+	 
+	 
+	 @GetMapping(value = "/history") 
+	 public List<History>  history() { 
+		 return service.history(); 
+	}
 }
 
 

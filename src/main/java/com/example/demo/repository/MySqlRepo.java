@@ -12,6 +12,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.example.demo.entities.History;
+import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
 
 @Repository
@@ -21,17 +24,14 @@ public class MySqlRepo implements StockRepository{
 	JdbcTemplate template;
 	
 	@Override
-	public List<Stock> getAllStocks() {
-		// TODO Auto-generated method stub
-		
-		String sql ="SELECT ID,STOCKTICKER, PRICE, VOLUME,BuyOrSell,StatusCode FROM Stocks";
+	public List<Stock> getAllStocks() {		
+		String sql ="SELECT ID, COMPANY,STOCKTICKER, PRICE, VOLUME FROM Stocks";
 		return template.query(sql,new StockRowMapper());
 	
 		}
 
 	@Override
 	public Stock getStockById(int id) {
-		// TODO Auto-generated method stub
 		String sql="SELECT * FROM Stocks WHERE ID=?";
 		return template.queryForObject(sql, new StockRowMapper(), id);
 
@@ -39,18 +39,15 @@ public class MySqlRepo implements StockRepository{
 
 	@Override
 	public Stock updateStock(Stock stock) {
-		// TODO Auto-generated method stub
-		String sql = "UPDATE Stocks SET stockTicker = ?, price = ? , volume = ?, buyOrSell = ?, statusCode = ? " +
-				"WHERE ID = ?";
+		String sql = "UPDATE Stocks SET stockTicker = ?, comapny= ?, price = ? , volume = ? WHERE ID = ?";
 
-		template.update(sql,stock.getStockTicker(),stock.getPrice(),stock.getVolume(),stock.getBuyOrSell(),stock.getStatusCode(),stock.getId());
+		template.update(sql,stock.getStockTicker(),stock.getCompany(), stock.getPrice(),stock.getVolume(),stock.getId());
 		return stock;
 	}
 
 
 	@Override
 	public int deleteStock(int id) {
-		// TODO Auto-generated method stub
 		String sql = "DELETE FROM Stocks WHERE ID = ?";
 		template.update(sql,id);
 		return id;
@@ -60,26 +57,11 @@ public class MySqlRepo implements StockRepository{
 	@Override
 	public Stock addStock(Stock stock) {
 		
-			// TODO Auto-generated method stub
-			String sql = "INSERT INTO Stocks(StockTicker, Price, Volume, BuyOrSell, StatusCode)" +
+			String sql = "INSERT INTO Stocks(Company, StockTicker, Price, Volume)" +
 					"VALUES(?,?,?,?,?)";
-			template.update(sql,stock.getStockTicker(),stock.getPrice(),stock.getVolume(),stock.getBuyOrSell(),stock.getStatusCode());
+			template.update(sql,stock.getCompany(), stock.getStockTicker(),stock.getPrice(),stock.getVolume());
 			return stock;
 		}
-
-	
-	class StockRowMapper implements RowMapper<Stock>
-	{
-		public Stock mapRow (ResultSet rs, int rowNum) throws SQLException
-		{
-			return new Stock(rs.getInt("ID"),
-					rs.getString("StockTicker"),
-					rs.getDouble("Price"),
-					rs.getInt("volume"),
-					rs.getString("BuyOrSell"),
-					rs.getInt("StatusCode"));
-		}
-	}
 
 
 	@Override
@@ -105,6 +87,10 @@ public class MySqlRepo implements StockRepository{
 
 			String sql4= "SELECT COUNT(ID) FROM HOLDINGS WHERE STOCKTICKER=?";
 			int stockInHistory =template.queryForObject(sql4, Integer.class, stockTicker);
+			
+
+			String sql= "SELECT PRICE FROM Stocks WHERE STOCKTICKER=?";
+			int price=template.queryForObject(sql, Integer.class, stockTicker);
 
 			if(stockInHistory==1)
 			{
@@ -119,8 +105,8 @@ public class MySqlRepo implements StockRepository{
 			
 			else
 			{
-				String sql5 = "INSERT INTO Holdings(StockTicker, Volume) VALUES(?,?)";
-				template.update(sql5, stockTicker, volume);
+				String sql5 = "INSERT INTO Holdings(StockTicker, Price, Volume) VALUES(?,?,?)";
+				template.update(sql5, stockTicker, price, volume);
 			}
 
 			
@@ -128,8 +114,8 @@ public class MySqlRepo implements StockRepository{
 			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			String date= sdf.format(d1);
 			
-			String sql6 = "INSERT INTO History (DateTime,StockTicker, Volume, BuyOrSell) VALUES(?,?,?,?)";
-			template.update(sql6, date, stockTicker, volume, "Buy");
+			String sql6 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
+			template.update(sql6, date, stockTicker, price, volume, "Buy");
 		
 			return "Stocks Bought Successfully";
 		}
@@ -138,7 +124,100 @@ public class MySqlRepo implements StockRepository{
 			return "Insufficient Volume";
 	    
 
+	}
+
+	@Override
+	public String sellStock(String stockTicker, int volume) {
+
+		String sql1= "SELECT COUNT(ID) FROM HOLDINGS WHERE STOCKTICKER=?";
+		int stockPresent =template.queryForObject(sql1, Integer.class, stockTicker);
+
+		if(stockPresent==0)
+			return "Stock not in holdings";
 		
+		
+		String sql2= "SELECT VOLUME FROM HOLDINGS WHERE STOCKTICKER=?";
+		int dbVolume=template.queryForObject(sql2, Integer.class, stockTicker);
+		
+		if(stockPresent==1 && dbVolume>=volume)
+		{
+			int modifiedVolume=dbVolume-volume;
+			
+			if(modifiedVolume==0)
+			{
+				String sql3= "DELETE FROM Holdings WHERE STOCKTICKER=?"; 
+				template.update(sql3,stockTicker);	
+			}
+			else
+			{
+				String sql3= "UPDATE Holdings SET VOLUME = ? WHERE STOCKTICKER=?"; 
+				template.update(sql3,modifiedVolume,stockTicker);
+			}	
+
+			Date d1 = new Date();
+			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			String date= sdf.format(d1);
+			
+			String sql6 = "INSERT INTO History (DateTime,StockTicker, Volume, BuyOrSell) VALUES(?,?,?,?)";
+			template.update(sql6, date, stockTicker, volume, "Sell");
+		
+			return "Stocks Sold Successfully";
+		}
+		
+		else
+			return "Insufficient Volume";
+	    
+
+	}
+
+	@Override
+	public List<Holding> holdings() {
+		String sql ="SELECT ID,STOCKTICKER,VOLUME,PRICE FROM Holdings";
+		return template.query(sql,new HoldingRowMapper());
+		}
+	
+
+	@Override
+	public List<History> history() {
+		String sql ="SELECT ID,DATETIME, STOCKTICKER, PRICE, VOLUME, BUYORSELL FROM HISTORY";
+		return template.query(sql,new HistoryRowMapper());
+		}
+	
+	class HoldingRowMapper implements RowMapper<Holding>
+	{
+		public Holding mapRow (ResultSet rs, int rowNum) throws SQLException
+		{
+			return new Holding(rs.getInt("ID"),
+					rs.getString("StockTicker"),
+					rs.getDouble("Price"),
+					rs.getInt("volume"));
+		}
+	}
+	
+	class HistoryRowMapper implements RowMapper<History>
+	{
+		public History mapRow (ResultSet rs, int rowNum) throws SQLException
+		{
+			return new History(rs.getInt("ID"),
+					rs.getString("DateTime"),
+					rs.getString("StockTicker"),
+					rs.getDouble("Price"),
+					rs.getInt("volume"),
+					rs.getString("BuyOrSell"));
+		}
+	}
+	
+
+	class StockRowMapper implements RowMapper<Stock>
+	{
+		public Stock mapRow (ResultSet rs, int rowNum) throws SQLException
+		{
+			return new Stock(rs.getInt("ID"),
+					rs.getString("Company"),
+					rs.getString("StockTicker"),
+					rs.getDouble("Price"),
+					rs.getInt("volume"));
+		}
 	}
 
 }
