@@ -1,5 +1,5 @@
 def mysqlHost = 'punedevopsa11.conygre.com'
-def projectName = 'Hackathon-project'
+def projectName = 'hackathon-project'
 def version = "0.0.${currentBuild.number}"
 def dockerImageTag = "${projectName}:${version}"
 
