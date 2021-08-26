@@ -45,7 +45,7 @@ pipeline {
       steps {
         sh "oc login -u ${OPENSHIFT_CREDS_USR} -p ${OPENSHIFT_CREDS_PSW}"
         sh "oc project ${projectName} || oc new-project ${projectName}"
-        sh "oc get service mysql-shippers || oc new-app -e MYSQL_ROOT_PASSWORD=c0nygre callalyf/mysql-shippers:0.0.1"
+        sh "oc get service mysql-shippers || oc new-app -e MYSQL_ROOT_PASSWORD=C0nygre-C0nygre callalyf/mysql-shippers:0.0.1"
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc new-app -l version=${version} -e DB_HOST=mysql-shippers ${dockerImageTag}"
         sh "oc expose svc/${projectName}"
