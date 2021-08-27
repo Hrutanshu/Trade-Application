@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.entities.History;
+import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
 import com.example.demo.repository.StockRepository;
 
@@ -36,6 +39,21 @@ public class StockService {
 	{
 		return repository.deleteStock(id);
 	}
+
+	public String BuyStock(String stockTicker, int volume) {
+		return repository.buyStock(stockTicker, volume);
+	}
 	
+	public String SellStock(String stockTicker, int volume) {
+		return repository.sellStock(stockTicker, volume);
+	}
+	
+	public List<Holding>  holdings() {
+		return repository.holdings();
+	}
+	
+	public List<History> history() {
+		return repository.history();
+	}
 	
 }
