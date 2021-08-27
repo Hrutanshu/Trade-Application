@@ -39,7 +39,7 @@ public class MySqlRepo implements StockRepository{
 
 	@Override
 	public Stock updateStock(Stock stock) {
-		String sql = "UPDATE Stocks SET stockTicker = ?, comapny= ?, price = ? , volume = ? WHERE ID = ?";
+		String sql = "UPDATE Stocks SET stockTicker = ?, company= ?, price = ? , volume = ? WHERE ID = ?";
 
 		template.update(sql,stock.getStockTicker(),stock.getCompany(), stock.getPrice(),stock.getVolume(),stock.getId());
 		return stock;
@@ -58,7 +58,7 @@ public class MySqlRepo implements StockRepository{
 	public Stock addStock(Stock stock) {
 		
 			String sql = "INSERT INTO Stocks(Company, StockTicker, Price, Volume)" +
-					"VALUES(?,?,?,?,?)";
+					"VALUES(?,?,?,?)";
 			template.update(sql,stock.getCompany(), stock.getStockTicker(),stock.getPrice(),stock.getVolume());
 			return stock;
 		}
