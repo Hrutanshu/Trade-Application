@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,6 +69,16 @@ public class StockController {
 	 @GetMapping(value = "/history") 
 	 public List<History>  history() { 
 		 return service.history(); 
+	}
+	 
+	@GetMapping(value = "/dropDown1")
+	public List<Map<String, Object>> dropDown1() {
+		return service.dropDown1();
+	}
+	
+	@GetMapping(value = "/getTicker/{id}")
+	public String getTicker(@PathVariable ("id") int id) {
+		return service.getTicker(id);
 	}
 }
 

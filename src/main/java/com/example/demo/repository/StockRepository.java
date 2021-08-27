@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
@@ -17,5 +18,6 @@ public interface StockRepository {
 	public String sellStock(String stockTicker, int volume);
 	public List<Holding>  holdings();
 	public List<History>  history();
-
+	public List<Map<String, Object>> dropDown1();
+	public String getTicker(int id);
 }

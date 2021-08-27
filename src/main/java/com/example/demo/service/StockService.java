@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,4 +57,11 @@ public class StockService {
 		return repository.history();
 	}
 	
+	public List<Map<String, Object>> dropDown1() {
+		return repository.dropDown1();
+	}
+	
+	public String getTicker(int id) {
+		return repository.getTicker(id);
+	}
 }
