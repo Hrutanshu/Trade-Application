@@ -57,7 +57,7 @@ public class MySqlRepo implements StockRepository{
 
 	@Override
 	public Stock updateStock(Stock stock) {
-		String sql = "UPDATE Stocks SET stockTicker = ?, comapany= ?, price = ? , volume = ? WHERE ID = ?";
+		String sql = "UPDATE Stocks SET stockTicker = ?, company= ?, price = ? , volume = ? WHERE ID = ?";
 
 		template.update(sql,stock.getStockTicker(),stock.getCompany(), stock.getPrice(),stock.getVolume(),stock.getId());
 		return stock;

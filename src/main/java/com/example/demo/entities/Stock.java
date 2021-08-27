@@ -2,6 +2,13 @@ package com.example.demo.entities;
 
 public class Stock {
 
+	@Override
+	public String toString() {
+		return "Stock [id=" + id + ", company=" + company + ", stockTicker=" + stockTicker + ", price=" + price
+				+ ", volume=" + volume + "]";
+	}
+
+
 	private int id;
 	private String company;
 	private String stockTicker;
