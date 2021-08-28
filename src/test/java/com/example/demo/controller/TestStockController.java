@@ -183,12 +183,23 @@ class TestStockController {
 		MvcResult mvcResult = this.mockmvc.perform(get("/api/stock/1")).andDo(print()).andExpect(status().isOk())
 				.andReturn();
 
-		System.out.println(mvcResult.getResponse().getContentAsString());
 		  Stock s = new
 		  ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new
 		  TypeReference<Stock>() { }); 
 		 // assertEquals(stock.toString(),s.toString());
 		  assertThat(s.getId()).isEqualTo(1);	 
+	}
+	
+	@Test
+	public void testGetTicker() throws Exception {
+
+		String ticker="AAPL";
+
+		when(stockController.getTicker(1)).thenReturn(ticker);
+
+
+		  
+		  assertEquals(ticker,stockController.getTicker(1));
 	}
 	
 	@Test
@@ -202,18 +213,7 @@ class TestStockController {
 		stock.setVolume(900);
 
 		when(stockController.addStock(stock)).thenReturn(stock);
-
-		//MvcResult mvcResult = this.mockmvc.perform(get("/api/stock/stock")).andDo(print()).andExpect(status().isOk())
-		//		.andReturn();
-
-		//System.out.println(mvcResult.getResponse().getContentAsString());
-		
-		
-		  //Stock s = new
-		 // ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new
-		//  TypeReference<Stock>() { }); 
 		  assertEquals(stock.toString(),stockController.addStock(stock).toString());
-		  //assertThat(s.getId()).isEqualTo(1);	 
 	
 	}
 	
@@ -251,8 +251,6 @@ class TestStockController {
 	
 	}
 	
-	
-	
 	@Test
 	public void testEditStock() throws Exception {
 
@@ -272,14 +270,8 @@ class TestStockController {
 	public void testDeleteStock() throws Exception {
 
 		when(stockController.deleteStock(1)).thenReturn(1);
-		MvcResult mvcResult = this.mockmvc.perform(get("/api/stock/1")).andDo(print()).andExpect(status().isOk())
-						.andReturn();
 
-				Stock s = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(),
-						new TypeReference<Stock>() {
-						});
-				
-				assertThat(stockController.deleteStock(1)).isEqualTo(1);
+		assertThat(stockController.deleteStock(1)).isEqualTo(1);
 	}
 	
 	private String mapToJson(List<History> object) throws JsonProcessingException {

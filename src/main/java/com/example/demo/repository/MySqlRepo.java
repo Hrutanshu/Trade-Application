@@ -35,7 +35,6 @@ public class MySqlRepo implements StockRepository{
 	
 	@Override
 	public List<Map<String, Object>> dropDown1() {
-		// TODO Auto-generated method stub
 		String sql ="SELECT id, stockTicker FROM Stocks";
 		return template.queryForList(sql);
 		}
@@ -43,7 +42,6 @@ public class MySqlRepo implements StockRepository{
 	@Override
 	public String getTicker(int id)
 	{
-
 		String sql="SELECT StockTicker FROM Stocks WHERE ID=?";
 		return template.queryForObject(sql, String.class ,id);
 	}
@@ -58,7 +56,6 @@ public class MySqlRepo implements StockRepository{
 	@Override
 	public Stock updateStock(Stock stock) {
 		String sql = "UPDATE Stocks SET stockTicker = ?, company= ?, price = ? , volume = ? WHERE ID = ?";
-
 		template.update(sql,stock.getStockTicker(),stock.getCompany(), stock.getPrice(),stock.getVolume(),stock.getId());
 		return stock;
 	}
@@ -106,7 +103,6 @@ public class MySqlRepo implements StockRepository{
 			String sql4= "SELECT COUNT(ID) FROM HOLDINGS WHERE STOCKTICKER=?";
 			int stockInHistory =template.queryForObject(sql4, Integer.class, stockTicker);
 			
-
 			String sql= "SELECT PRICE FROM Stocks WHERE STOCKTICKER=?";
 			int price=template.queryForObject(sql, Integer.class, stockTicker);
 
@@ -133,15 +129,13 @@ public class MySqlRepo implements StockRepository{
 			String date= sdf.format(d1);
 			
 			String sql6 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
-			template.update(sql6, date, stockTicker, price, volume, "Buy");
+			template.update(sql6, date, stockTicker, price, volume, "Bought");
 		
 			return "Stocks Bought Successfully";
 		}
 		
 		else
 			return "Insufficient Volume";
-	    
-
 	}
 
 	@Override
@@ -153,48 +147,45 @@ public class MySqlRepo implements StockRepository{
 		if(stockPresent==0)
 			return "Stock not in holdings";
 		
-		
 		String sql2= "SELECT VOLUME FROM HOLDINGS WHERE STOCKTICKER=?";
 		int dbVolume=template.queryForObject(sql2, Integer.class, stockTicker);
 		
-		String sql99= "SELECT VOLUME FROM stocks WHERE STOCKTICKER=?";
-		int dbVolume99=template.queryForObject(sql99, Integer.class, stockTicker);
+		String sql3= "SELECT VOLUME FROM stocks WHERE STOCKTICKER=?";
+		int dataBVolume=template.queryForObject(sql3, Integer.class, stockTicker);
 		
 		if(stockPresent==1 && dbVolume>=volume)
 		{
-			int modifiedVolume=dbVolume-volume;
-			int modifiedVolume99=dbVolume99+volume;
+			int HoldingVol=dbVolume-volume;
+			int modifiedVolume=dataBVolume+volume;
 			
-			if(modifiedVolume==0)
+			if(HoldingVol==0)
 			{
-				String sql3= "DELETE FROM Holdings WHERE STOCKTICKER=?"; 
-				template.update(sql3,stockTicker);	
+				String sql4= "DELETE FROM Holdings WHERE STOCKTICKER=?"; 
+				template.update(sql4,stockTicker);	
 			}
 			else
 			{
-				String sql3= "UPDATE Holdings SET VOLUME = ? WHERE STOCKTICKER=?"; 
-				template.update(sql3,modifiedVolume,stockTicker);
+				String sql4= "UPDATE Holdings SET VOLUME = ? WHERE STOCKTICKER=?"; 
+				template.update(sql4,HoldingVol,stockTicker);
 			}	
-			String sql999= "UPDATE stocks SET VOLUME = ? WHERE STOCKTICKER=?"; 
-			template.update(sql999,modifiedVolume99,stockTicker);
+			String sql5= "UPDATE stocks SET VOLUME = ? WHERE STOCKTICKER=?"; 
+			template.update(sql5,modifiedVolume,stockTicker);
 			
 			Date d1 = new Date();
 			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			String date= sdf.format(d1);
 
-			String sql9999= "SELECT price FROM stocks WHERE STOCKTICKER=?";
-			int price9999=template.queryForObject(sql9999, Integer.class, stockTicker);
+			String sql6= "SELECT price FROM stocks WHERE STOCKTICKER=?";
+			int price=template.queryForObject(sql6, Integer.class, stockTicker);
 			
-			String sql6 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
-			template.update(sql6, date, stockTicker, price9999, volume, "Sell");
+			String sql7 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
+			template.update(sql7, date, stockTicker, price, volume, "Sold");
 		
 			return "Stocks Sold Successfully";
 		}
 		
 		else
 			return "Insufficient Volume";
-	    
-
 	}
 
 	@Override
@@ -203,7 +194,6 @@ public class MySqlRepo implements StockRepository{
 		return template.query(sql,new HoldingRowMapper());
 		}
 	
-
 	@Override
 	public List<History> history() {
 		String sql ="SELECT ID,DATETIME, STOCKTICKER, PRICE, VOLUME, BUYORSELL FROM HISTORY";
