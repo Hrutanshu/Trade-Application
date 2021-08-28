@@ -3,9 +3,7 @@ package com.example.demo.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.ArrayList;
@@ -27,19 +25,15 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
 import com.example.demo.service.StockService;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ActiveProfiles("h2")
 @SpringBootTest
@@ -141,33 +135,6 @@ class TestStockController {
 
 	}
 
-
-	
-	
-
-	//@Test
-	/*
-	 * public void testGetStockById() throws Exception {
-	 * 
-	 * Stock stock = new Stock(); stock.setCompany("Apple"); stock.setId(1);
-	 * stock.setPrice(45); stock.setStockTicker("AAPL"); stock.setVolume(900);
-	 * 
-	 * 
-	 * when(stockController.getStockById(1)).thenReturn(stock);
-	 * 
-	 * 
-	 * String URI = "api/stock/1"; RequestBuilder requestBuilder =
-	 * MockMvcRequestBuilders.get(URI).accept( MediaType.APPLICATION_JSON);
-	 * 
-	 * MvcResult result = mockmvc.perform(requestBuilder).andReturn(); //String
-	 * expectedJson = this.mapToJson(stock); String outputInJson =
-	 * result.getResponse().getContentAsString();
-	 * 
-	 * assertEquals(stockController.getStockById(1),stock);
-	 * 
-	 * }
-	 */
-	
 	@Test
 	public void testgetByID() throws Exception {
 
@@ -186,7 +153,6 @@ class TestStockController {
 		  Stock s = new
 		  ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new
 		  TypeReference<Stock>() { }); 
-		 // assertEquals(stock.toString(),s.toString());
 		  assertThat(s.getId()).isEqualTo(1);	 
 	}
 	
@@ -196,9 +162,6 @@ class TestStockController {
 		String ticker="AAPL";
 
 		when(stockController.getTicker(1)).thenReturn(ticker);
-
-
-		  
 		  assertEquals(ticker,stockController.getTicker(1));
 	}
 	

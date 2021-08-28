@@ -23,6 +23,7 @@ import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
 
+
 @SpringBootTest
 public class MySqlRepoTest {
 	
@@ -30,21 +31,27 @@ public class MySqlRepoTest {
 	MySqlRepo mySqlRepo;
 	List<Stock> datalist;
 	
+	public Stock stock1 = new Stock();
+	
 	@BeforeEach
 	public void setUpData()
 	{
 		//1. Any setup stuff
-		datalist= new ArrayList<>();
-		Stock stock1 = new Stock();
+		
 		stock1.setCompany("Apple");
 		stock1.setId(1);
 		stock1.setPrice(45);
 		stock1.setStockTicker("AAPL");
 		stock1.setVolume(900);
 		
-		datalist.add(stock1);
 	}	
 	
+	
+	private void assertEquals(String string, String ticker) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Test
 	public void testGetAllStocks()
 	{		
@@ -72,5 +79,7 @@ public class MySqlRepoTest {
 		List<Holding> allHoldings = mySqlRepo.holdings();
 		assertThat(allHoldings).isNotEmpty();
 	}
+	
+	
 	
 }
