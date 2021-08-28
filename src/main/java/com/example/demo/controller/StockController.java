@@ -30,7 +30,7 @@ public class StockController {
 		return service.getAllstocks();
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/get/{id}")
 	public Stock getStockById(@PathVariable("id") int id) {
 	  return service.getStock(id);
 	}

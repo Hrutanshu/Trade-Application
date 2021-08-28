@@ -32,6 +32,7 @@ function dropDown1() {
 		.then(shippers => {			
 			if (shippers.length > 0) {
 				 var temp = "";
+				 temp += "<option value=''>Select Stock</option>"
 				 shippers.forEach((itemData) => {
 					 temp += "<option value='";
 					 temp += itemData.id;
@@ -94,4 +95,28 @@ volum = document.getElementById('volume').value;
   alert(data);
   getStocks();
 });
+}
+
+async function display() {
+	const selectElement = document.querySelector('#dropdown1');
+	selectElement.addEventListener('change', (event) => {
+  		const result = document.querySelector('.result');
+  		const displayPrice = document.querySelector('.displayPrice');
+		const url=`http://localhost:8080/api/stock/get/${event.target.value}`;
+		fetch(url)//promise object to return data from Rest API
+			.then(response => { return response.json();}) //resolve , data from resolve is passed to next then
+			.then(data => {
+				var temp = `Company name : `;
+				temp += `<b>`;
+				temp += `${data.company}`;
+				temp += `</b>`;
+  				result.innerHTML = temp;
+  				
+  				temp = `Price per stock : `;
+  				temp += `<b>`;
+  				temp += `${data.price}`;
+  				temp += `</b>`;
+  				displayPrice.innerHTML = temp;
+				})
+	});
 }
