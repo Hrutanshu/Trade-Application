@@ -1,6 +1,30 @@
 /**
  * 
  */
+ function getStocks()
+{
+	const url="http://localhost:8080/api/stock/";
+	fetch(url)
+		.then(response => { return response.json();}) 
+		.then(stocks => {			
+			if (stocks.length > 0) {
+				 var temp = "";
+				 stocks.forEach((itemData) => {
+					
+					 temp += "<tr>";
+					 
+					 temp += "<td>" + itemData.company + "</td>";
+					 temp += "<td>" + itemData.stockTicker + "</td>";
+					 temp += "<td>" + itemData.price + "</td>";
+					 temp += "<td>" + itemData.volume + "</td>";
+					 temp += "</tr>";
+					
+					});
+				 document.getElementById('tbodyStocks').innerHTML = temp; 
+				 }	
+			})
+		
+}
 function dropDown1() {
 	const url="http://localhost:8080/api/stock/dropDown1";
 	fetch(url)//promise object to return data from Rest API
@@ -22,15 +46,18 @@ function dropDown1() {
 
 async function buy() {
 var stringTicker;
-const data = { 
-					 id:document.getElementById('dropdown1').value, 
-					 volume:document.getElementById('volume').value  };
-	alert(JSON.stringify(data));
-	console.log(data.id);
-	const url=`http://localhost:8080/api/stock/getTicker/${data.id}`;
+i = document.getElementById('dropdown1').value;
+volum = document.getElementById('volume').value;
+
+	console.log(i);
+	const url=`http://localhost:8080/api/stock/getTicker/${i}`;
 	const response = await fetch(url);
 	var dat = await response.text();
-	
+	const data = { 
+				 name:dat,
+				 volume:volum
+   };
+	alert(JSON.stringify(data));
 	fetch(`http://localhost:8080/api/stock/buy/${dat}/${data.volume}`, {
   method: 'GET'
 })
@@ -39,20 +66,24 @@ const data = {
 .then((data) => {
   console.log(data);
   alert(data);
+  getStocks();
 });
 }
 
 async function sell() {
 var stringTicker;
-const data = { 
-					 id:document.getElementById('dropdown1').value, 
-					 volume:document.getElementById('volume').value  };
-	alert(JSON.stringify(data));
-	console.log(data.id);
-	const url=`http://localhost:8080/api/stock/getTicker/${data.id}`;
+i = document.getElementById('dropdown1').value;
+volum = document.getElementById('volume').value;
+
+	console.log(i);
+	const url=`http://localhost:8080/api/stock/getTicker/${i}`;
 	const response = await fetch(url);
 	var dat = await response.text();
-	
+	const data = { 
+					 name:dat,
+					 volume:volum
+					   };
+	alert(JSON.stringify(data));
 	fetch(`http://localhost:8080/api/stock/sell/${dat}/${data.volume}`, {
   method: 'GET'
 })
@@ -61,5 +92,6 @@ const data = {
 .then((data) => {
   console.log(data);
   alert(data);
+  getStocks();
 });
 }
