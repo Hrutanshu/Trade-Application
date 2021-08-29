@@ -102,20 +102,17 @@ async function display() {
 	selectElement.addEventListener('change', (event) => {
   		const result = document.querySelector('.result');
   		const displayPrice = document.querySelector('.displayPrice');
+  		
 		const url=`http://localhost:8080/api/stock/get/${event.target.value}`;
 		fetch(url)//promise object to return data from Rest API
 			.then(response => { return response.json();}) //resolve , data from resolve is passed to next then
 			.then(data => {
-				var temp = `Company name : `;
-				temp += `<b>`;
-				temp += `${data.company}`;
-				temp += `</b>`;
+				var temp = `<i><b>Company name : </b></i>`;
+				temp += `${data.company}<hr>`;
   				result.innerHTML = temp;
   				
-  				temp = `Price per stock : `;
-  				temp += `<b>`;
-  				temp += `${data.price}`;
-  				temp += `</b>`;
+  				temp = `<i><b>Price per stock : </b></i>`;
+  				temp += `${data.price}<hr>`;
   				displayPrice.innerHTML = temp;
 				})
 	});
