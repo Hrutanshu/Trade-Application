@@ -41,6 +41,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 class TestStockController {
 
+
 	@Autowired
 	MockMvc mockmvc;
 
@@ -147,13 +148,7 @@ class TestStockController {
 
 		when(stockController.getStockById(1)).thenReturn(stock);
 
-		MvcResult mvcResult = this.mockmvc.perform(get("/api/stock/1")).andDo(print()).andExpect(status().isOk())
-				.andReturn();
-
-		  Stock s = new
-		  ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new
-		  TypeReference<Stock>() { }); 
-		  assertThat(s.getId()).isEqualTo(1);	 
+		assertEquals(stockController.getStockById(1),stock);	 
 	}
 	
 	@Test
@@ -252,6 +247,4 @@ class TestStockController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		return objectMapper.writeValueAsString(object);
 	}
-	
-
 }
