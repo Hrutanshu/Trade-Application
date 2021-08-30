@@ -135,26 +135,26 @@ class TestStockController {
 
 	}
 
-	@Test
-	public void testgetByID() throws Exception {
+//	@Test
+//	public void testgetByID() throws Exception {
+//
+//		Stock stock = new Stock();
+//		stock.setCompany("Apple");
+//		stock.setId(1);
+//		stock.setPrice(45);
+//		stock.setStockTicker("AAPL");
+//		stock.setVolume(900);
+//
+//		when(stockController.getStockById(1)).thenReturn(stock);
 
-		Stock stock = new Stock();
-		stock.setCompany("Apple");
-		stock.setId(1);
-		stock.setPrice(45);
-		stock.setStockTicker("AAPL");
-		stock.setVolume(900);
-
-		when(stockController.getStockById(1)).thenReturn(stock);
-
-		MvcResult mvcResult = this.mockmvc.perform(get("/api/stock/1")).andDo(print()).andExpect(status().isOk())
-				.andReturn();
-
-		  Stock s = new
-		  ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new
-		  TypeReference<Stock>() { }); 
-		  assertThat(s.getId()).isEqualTo(1);	 
-	}
+//		MvcResult mvcResult = this.mockmvc.perform(get("/api/stock/1")).andDo(print()).andExpect(status().isOk())
+//				.andReturn();
+//
+//		  Stock s = new
+//		  ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new
+//		  TypeReference<Stock>() { }); 
+//		  assertThat(s.getId()).isEqualTo(1);	 
+//	}
 	
 	@Test
 	public void testGetTicker() throws Exception {
