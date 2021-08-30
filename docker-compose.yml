@@ -12,7 +12,7 @@ services:
       - mysqlnet
 
   javaapp:
-    image: hackathon-7b:0.0.1
+    image: hackathon-project:0.0.1
     environment:
       DB_HOST: mysql
     ports:
