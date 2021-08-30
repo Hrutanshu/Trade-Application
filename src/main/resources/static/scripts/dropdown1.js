@@ -113,7 +113,7 @@ async function display() {
   				
   				temp = `<i><b>Price per stock : </b></i>`;
   				temp += `${data.price}`;
-  				temp += `<br><i><b>Current avaliable volume : </b></i>`;
+  				temp += `<br><i><b>Current available volume : </b></i>`;
   				temp += `${data.volume}<hr>`;
   				displayPrice.innerHTML = temp;
 				})
