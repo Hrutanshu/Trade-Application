@@ -136,6 +136,7 @@ class TestStockController {
 
 	}
 
+
 	@Test
 	public void testgetByID() throws Exception {
 
