@@ -8,13 +8,13 @@ public class History {
 	private int volume;
 	private String DateTime;
 	private String BuyOrSell;
-	
+	private int status_code;
 
 	public History()
 	{	
 	}
 	
-	public History(int id, String dateTime, String stockTicker, int price, int volume, String buyOrSell) {
+	public History(int id, String dateTime, String stockTicker, int price, int volume, String buyOrSell, int status_code) {
 		super();
 		this.id = id;
 		this.stockTicker = stockTicker;
@@ -22,6 +22,7 @@ public class History {
 		this.volume = volume;
 		DateTime = dateTime;
 		BuyOrSell = buyOrSell;
+		this.status_code = status_code;
 	}
 	
 	public String getDateTime() {
@@ -63,5 +64,11 @@ public class History {
 	}
 	public void setVolume(int volume) {
 		this.volume = volume;
+	}
+	public int getStatus_code() {
+		return status_code;
+	}
+	public void setStatus_code(int status_code) {
+		this.status_code = status_code;
 	}
 }

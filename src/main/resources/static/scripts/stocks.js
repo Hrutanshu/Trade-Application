@@ -10,7 +10,7 @@ function getHistory()
 		.then(history => {			
 			if (history.length > 0) {
 				 var temp = "";
-				 
+				 var total;
 				 history.forEach((itemData) => {
 					 temp += "<tr>";
 					 temp += "<td>" + itemData.id + "</td>";
@@ -18,15 +18,36 @@ function getHistory()
 					 temp += "<td>" + itemData.stockTicker + "</td>";
 					 temp += "<td>" + itemData.price + "</td>";
 					 temp += "<td>" + itemData.volume + "</td>";
-					 temp += "<td>" + itemData.buyOrSell + "</td>";
-					
+					 total = itemData.price * itemData.volume;
+					 temp += "<td>" + total + "</td>";
+					 temp += "<td>";
+					 if(itemData.buyOrSell == "Bought") {
+					 	temp += "Order placed: Buy";
+					 }
+					 else {
+					 	temp += "Order placed: Sell";
+					 }
+					 temp += "</td>";
+					 temp += "<td>";
+					 if(itemData.status_code == 0) {
+					 	temp += "Order initiated";
+					 }
+					 else if(itemData.status_code == 1) {
+					 	temp += "Order processing";
+					 }
+					 else if(itemData.status_code == 2) {
+					 	temp += "order successful";
+					 }
+					 else if(itemData.status_code == 3) {
+					 	temp += "Order failed";
+					 }
+					 temp += "</td>";
 					
 					
 					});
 				 document.getElementById('tbodyhistory').innerHTML = temp; //populate the html element with the ID of  tbodyShippers with TR tags
 				 }	
 			})
-			console.log(history.length);
 		
 }
 function getHoldings()

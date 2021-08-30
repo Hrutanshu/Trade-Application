@@ -8,6 +8,7 @@ import java.util.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -83,7 +84,7 @@ public class MySqlRepo implements StockRepository{
 	public String buyStock(String stockTicker, int volume) {
 
 		String sql1= "SELECT COUNT(ID) FROM STOCKS WHERE STOCKTICKER=?";
-		int stockPresent =template.queryForObject(sql1, Integer.class, stockTicker);
+		int stockPresent = template.queryForObject(sql1, Integer.class, stockTicker);
 
 		if(stockPresent==0)
 			return "Stock not present";
@@ -94,44 +95,56 @@ public class MySqlRepo implements StockRepository{
 		
 		if(stockPresent==1 && dbVolume>=volume)
 		{
-			int modifiedVolume=dbVolume-volume;
-			
-			String sql3= "UPDATE Stocks SET VOLUME = ? WHERE STOCKTICKER=?"; 
-			template.update(sql3,modifiedVolume,stockTicker);
-			
-
-			String sql4= "SELECT COUNT(ID) FROM HOLDINGS WHERE STOCKTICKER=?";
-			int stockInHistory =template.queryForObject(sql4, Integer.class, stockTicker);
-			
 			String sql= "SELECT PRICE FROM Stocks WHERE STOCKTICKER=?";
 			int price=template.queryForObject(sql, Integer.class, stockTicker);
-
-			if(stockInHistory==1)
-			{
-				String sql5= "SELECT VOLUME FROM HOLDINGS WHERE STOCKTICKER=?";
-				int dbVol=template.queryForObject(sql5, Integer.class, stockTicker);
-				int UpdateVol=volume+dbVol;
-
-				String sql6= "UPDATE HOLDINGS SET VOLUME = ? WHERE STOCKTICKER=?"; 
-				template.update(sql6,UpdateVol,stockTicker);
-		
-			}
-			
-			else
-			{
-				String sql5 = "INSERT INTO Holdings(StockTicker, Price, Volume) VALUES(?,?,?)";
-				template.update(sql5, stockTicker, price, volume);
-			}
-
 			
 			Date d1 = new Date();
 			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			String date= sdf.format(d1);
 			
-			String sql6 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
-			template.update(sql6, date, stockTicker, price, volume, "Bought");
-		
-			return "Stocks Bought Successfully";
+			String sql7 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
+			template.update(sql7, date, stockTicker, price, volume, "Bought");
+			
+			int modifiedVolume=dbVolume-volume;
+			String sql9 = "select count(*) from history";
+			int count = template.queryForObject(sql9, Integer.class);
+
+			wait(10000);
+			String sql8 = "select status_code from history where id=?";
+			int status = template.queryForObject(sql8, Integer.class, count);
+			System.out.println(status);
+			if(status == 2) {
+				String sql3= "UPDATE Stocks SET VOLUME = ? WHERE STOCKTICKER=?"; 
+				template.update(sql3,modifiedVolume,stockTicker);
+				
+				String sql4= "SELECT COUNT(ID) FROM HOLDINGS WHERE STOCKTICKER=?";
+				int stockInHistory =template.queryForObject(sql4, Integer.class, stockTicker);
+				
+				if(stockInHistory==1)
+				{
+					String sql5= "SELECT VOLUME FROM HOLDINGS WHERE STOCKTICKER=?";
+					int dbVol=template.queryForObject(sql5, Integer.class, stockTicker);
+					int UpdateVol=volume+dbVol;
+	
+					String sql6= "UPDATE HOLDINGS SET VOLUME = ? WHERE STOCKTICKER=?"; 
+					template.update(sql6,UpdateVol,stockTicker);
+			
+				}
+				
+				else
+				{
+					String sql5 = "INSERT INTO Holdings(StockTicker, Price, Volume) VALUES(?,?,?)";
+					template.update(sql5, stockTicker, price, volume);
+				}
+				return "Stocks Bought Successfully";
+			}
+			else if(status == 3) {
+				return "Transaction failed";
+			}
+			else {
+				return "Order initiated";
+			}
+
 		}
 		
 		else
@@ -155,22 +168,6 @@ public class MySqlRepo implements StockRepository{
 		
 		if(stockPresent==1 && dbVolume>=volume)
 		{
-			int HoldingVol=dbVolume-volume;
-			int modifiedVolume=dataBVolume+volume;
-			
-			if(HoldingVol==0)
-			{
-				String sql4= "DELETE FROM Holdings WHERE STOCKTICKER=?"; 
-				template.update(sql4,stockTicker);	
-			}
-			else
-			{
-				String sql4= "UPDATE Holdings SET VOLUME = ? WHERE STOCKTICKER=?"; 
-				template.update(sql4,HoldingVol,stockTicker);
-			}	
-			String sql5= "UPDATE stocks SET VOLUME = ? WHERE STOCKTICKER=?"; 
-			template.update(sql5,modifiedVolume,stockTicker);
-			
 			Date d1 = new Date();
 			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			String date= sdf.format(d1);
@@ -180,8 +177,40 @@ public class MySqlRepo implements StockRepository{
 			
 			String sql7 = "INSERT INTO History (DateTime,StockTicker, Price, Volume, BuyOrSell) VALUES(?,?,?,?,?)";
 			template.update(sql7, date, stockTicker, price, volume, "Sold");
-		
-			return "Stocks Sold Successfully";
+			
+			int HoldingVol=dbVolume-volume;
+			int modifiedVolume=dataBVolume+volume;
+			
+			String sql9 = "select count(*) from history";
+			int count = template.queryForObject(sql9, Integer.class);
+			
+			wait(13000);
+			
+			String sql8 = "select status_code from history where id=?";
+			int status = template.queryForObject(sql8, Integer.class, count);
+			if(status == 2) {
+				if(HoldingVol==0)
+				{
+					String sql4= "DELETE FROM Holdings WHERE STOCKTICKER=?"; 
+					template.update(sql4,stockTicker);	
+				}
+				else
+				{
+					
+					String sql4= "UPDATE Holdings SET VOLUME = ? WHERE STOCKTICKER=?"; 
+					template.update(sql4,HoldingVol,stockTicker);
+				}	
+				String sql5= "UPDATE stocks SET VOLUME = ? WHERE STOCKTICKER=?"; 
+				template.update(sql5,modifiedVolume,stockTicker);
+				return "Stocks Sold Successfully";
+			}
+			else if(status == 3) {
+				return "Transaction failed!";
+			}
+			else {
+				return "Transaction processing";
+			}
+			
 		}
 		
 		else
@@ -196,7 +225,7 @@ public class MySqlRepo implements StockRepository{
 	
 	@Override
 	public List<History> history() {
-		String sql ="SELECT ID,DATETIME, STOCKTICKER, PRICE, VOLUME, BUYORSELL FROM HISTORY";
+		String sql ="SELECT ID,DATETIME, STOCKTICKER, PRICE, VOLUME, BUYORSELL, STATUS_CODE FROM HISTORY";
 		return template.query(sql,new HistoryRowMapper());
 		}
 	
@@ -220,7 +249,8 @@ public class MySqlRepo implements StockRepository{
 					rs.getString("StockTicker"),
 					rs.getInt("Price"),
 					rs.getInt("volume"),
-					rs.getString("BuyOrSell"));
+					rs.getString("BuyOrSell"),
+					rs.getInt("status_code"));
 		}
 	}
 	
@@ -237,6 +267,16 @@ public class MySqlRepo implements StockRepository{
 		}
 	}
 	
-
+	public static void wait(int ms)
+	{
+	    try
+	    {
+	        Thread.sleep(ms);
+	    }
+	    catch(InterruptedException ex)
+	    {
+	        Thread.currentThread().interrupt();
+	    }
+	}
 
 }
