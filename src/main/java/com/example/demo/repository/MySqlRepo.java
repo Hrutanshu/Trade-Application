@@ -36,7 +36,7 @@ public class MySqlRepo implements StockRepository{
 	
 	@Override
 	public List<Map<String, Object>> dropDown1() {
-		String sql ="SELECT id, stockTicker FROM Stocks";
+		String sql ="SELECT id, stockTicker FROM Stocks order by stockTicker";
 		return template.queryForList(sql);
 		}
 	
@@ -109,7 +109,7 @@ public class MySqlRepo implements StockRepository{
 			String sql9 = "select count(*) from history";
 			int count = template.queryForObject(sql9, Integer.class);
 
-			wait(10000);
+			wait(15000);
 			String sql8 = "select status_code from history where id=?";
 			int status = template.queryForObject(sql8, Integer.class, count);
 			System.out.println(status);
@@ -184,7 +184,7 @@ public class MySqlRepo implements StockRepository{
 			String sql9 = "select count(*) from history";
 			int count = template.queryForObject(sql9, Integer.class);
 			
-			wait(13000);
+			wait(15000);
 			
 			String sql8 = "select status_code from history where id=?";
 			int status = template.queryForObject(sql8, Integer.class, count);
@@ -225,7 +225,7 @@ public class MySqlRepo implements StockRepository{
 	
 	@Override
 	public List<History> history() {
-		String sql ="SELECT ID,DATETIME, STOCKTICKER, PRICE, VOLUME, BUYORSELL, STATUS_CODE FROM HISTORY";
+		String sql ="SELECT ID,DATETIME, STOCKTICKER, PRICE, VOLUME, BUYORSELL, STATUS_CODE FROM HISTORY order by id DESC";
 		return template.query(sql,new HistoryRowMapper());
 		}
 	

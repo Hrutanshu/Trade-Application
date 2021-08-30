@@ -106,3 +106,64 @@ var chart = new google.visualization.PieChart(document.getElementById('myChart')
 			})
 				
 }
+
+function getline(){
+const url="http://localhost:8080/api/stock/history";
+	var data = new google.visualization.DataTable();
+  // Add columns
+  data.addColumn('string', 'Date');
+  data.addColumn('number', '$buy');
+  data.addColumn('number', '$sell');
+	fetch(url)//promise object to return data from Rest API
+		.then(response => { return response.json();}) //resolve , data from resolve is passed to next then
+		.then(history => {			
+			if (history.length > 0) {
+				
+				 var x=0;
+				 var buy;
+				 var sell;
+				 let check="";
+				 history.forEach((itemData) => {
+				 x++;
+				 if(check =="" || check.localeCompare((itemData.dateTime).slice(0,10))!=0){
+				 	console.log((itemData.dateTime).slice(0,10));
+				 	if (!(check=== "")){
+				 	
+				 	data.addRow([check,buy,sell]);
+				 console.log(buy);
+				 	}
+				 	buy=0;sell=0;
+				 	check=(itemData.dateTime).slice(0,10);
+					}
+					if(itemData.buyOrSell=='Bought'){
+					
+					buy +=((itemData.price)*(itemData.volume));}
+					else{
+					
+					sell +=((itemData.price*itemData.volume));}
+					if(x==history.length ){
+					console.log(sell);
+					data.addRow([check,buy,sell]);}
+					});
+				var options = {
+        chart: {
+          title: 'History Distribution',
+          
+        },
+        width: 500,
+        height: 300,
+        hAxis: {
+                  title: 'Date',         
+               },
+               vAxis: {
+                  title: 'Price',        
+               },
+      };
+
+      var chart = new google.charts.Line(document.getElementById('line_top_x'));
+
+      chart.draw(data, options);
+				 }	
+			})
+				
+}
