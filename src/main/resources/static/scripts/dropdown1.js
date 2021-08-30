@@ -1,6 +1,77 @@
 /**
  * 
  */
+ 
+function abc()
+{
+ 	
+window.addEventListener('load',() => {
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	document.getElementById("nameuser").innertext=userName;
+	console.log(userName);
+})
+}
+
+
+ function register()
+ {
+  var email=document.getElementById("email").value;
+  var username=document.getElementById("username").value;
+  var password=document.getElementById("password").value;
+  
+  
+  fetch(`http://localhost:8080/api/stock/register/${username}/${password}/${email}`, {
+  method: 'POST'
+})
+.then((response) => { return response.json();})
+.then(result =>
+	{
+	console.log(result);
+		if(result=="1")
+ 			{
+ 			 		alert("Registration success");
+ 			 			setTimeout(() => { console.log("success");}, 5000);
+
+ 
+ 					window.location.href='/login.html';	
+ 			}	
+ 			
+ 	else 
+ 		alert("Registration Failed Try other username");
+	});
+	
+ }
+ 
+ 
+ 
+ function login()
+ {
+  var username=document.getElementById("username").value;
+  var password=document.getElementById("password").value;
+  
+  
+  fetch(`http://localhost:8080/api/stock/login/${username}/${password}`, {
+  method: 'GET'
+})
+.then((response) => { return response.json();})
+.then(result =>
+	{
+	console.log(result);
+		if(result=="1")
+ 			{
+ 			 		alert("Login success");
+ 			 			setTimeout(() => { console.log("success");}, 5000);
+
+ 			window.location.href='/stocksrestapi.html?name=' + encodeURIComponent(username);
+ 			}	
+ 			
+ 	else 
+ 		alert("Login Failed Try Again");
+	});
+	
+ }
+ 
  function getStocks()
 {
 	const url="http://localhost:8080/api/stock/";

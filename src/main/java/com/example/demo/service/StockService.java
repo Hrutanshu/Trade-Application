@@ -64,4 +64,14 @@ public class StockService {
 	public String getTicker(int id) {
 		return repository.getTicker(id);
 	}
+
+	public String login(String username, String pwd) {
+		// TODO Auto-generated method stub
+		return repository.login(username,pwd);
+	}
+
+	public String register(String username, String pwd,String email) {
+		// TODO Auto-generated method stub
+		return repository.register(username,pwd,email);
+	}
 }

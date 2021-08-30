@@ -34,6 +34,20 @@ public class StockController {
 	public Stock getStockById(@PathVariable("id") int id) {
 	  return service.getStock(id);
 	}
+	
+	@GetMapping(value="/login/{username}/{pwd}")
+	public String login(@PathVariable ("username") String username, @PathVariable ("pwd") String pwd)
+	{
+		return service.login(username,pwd);
+		
+	}
+	
+	@PostMapping(value="/register/{username}/{pwd}/{email}")
+	public String register(@PathVariable ("username") String username, @PathVariable ("pwd") String pwd,@PathVariable ("email") String email)
+	{
+		return service.register(username,pwd,email);
+		
+	}
 
 	@PostMapping(value = "/")
 	public Stock addStock(@RequestBody Stock stock) {

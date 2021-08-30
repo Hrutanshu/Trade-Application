@@ -20,4 +20,6 @@ public interface StockRepository {
 	public List<History>  history();
 	public List<Map<String, Object>> dropDown1();
 	public String getTicker(int id);
+	public String login(String username, String pwd);
+	public String register(String username, String pwd, String email);
 }

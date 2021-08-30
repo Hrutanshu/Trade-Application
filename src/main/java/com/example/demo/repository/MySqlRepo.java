@@ -279,4 +279,26 @@ public class MySqlRepo implements StockRepository{
 	    }
 	}
 
+	@Override
+	public String login(java.lang.String username, java.lang.String pwd) {
+		// TODO Auto-generated method stub
+		String sql= "SELECT USERPASSWORD FROM USERDATA WHERE USERNAME=?";
+		String password=template.queryForObject(sql, String.class, username);
+		if(password.equals(pwd))
+			return "1";
+		else return "0";
+		
+	}
+
+	@Override
+	public String register(java.lang.String username, java.lang.String pwd, java.lang.String email) {
+		// TODO Auto-generated method stub
+		String sql="INSERT INTO USERDATA(EMAIL, USERPASSWORD, USERNAME) VALUES (?,?,?)";
+		int response=template.update(sql, email, pwd, username);
+		System.out.println("responseeeeeeeeeeee"+ response);
+		if(response==0)
+			return "0";
+		return "1";
+	}
+
 }
