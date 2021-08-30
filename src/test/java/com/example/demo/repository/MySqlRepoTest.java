@@ -56,7 +56,7 @@ public class MySqlRepoTest {
 		
 	}
 
-	@Test
+	/*@Test
 	public void testGetAllStocks()
 	{		
 		//2. Call the method under test
@@ -82,7 +82,7 @@ public class MySqlRepoTest {
 	{
 		List<Holding> allHoldings = mySqlRepo.holdings();
 		assertThat(allHoldings).isNotEmpty();
-	}
+	}*/
 	
 }
 	

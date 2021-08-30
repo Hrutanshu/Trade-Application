@@ -2,6 +2,6 @@ FROM mysql:latest
 
 COPY schema/schema.sql /docker-entrypoint-initdb.d
 
-ENV MYSQL_ROOT_PASSWORD c0nygre
+ENV MYSQL_ROOT_PASSWORD C0nygre-C0nygre
 
 EXPOSE 3306
