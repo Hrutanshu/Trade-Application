@@ -19,6 +19,7 @@ import com.example.demo.entities.Stock;
 @ActiveProfiles("h2")
 public class MySqlRepoTest {
 	
+	
 	@Autowired
 	StockRepository stockRepo;
 	
@@ -60,18 +61,6 @@ public class MySqlRepoTest {
 		
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 				stockRepo.getStockById(2); });
-		
 	}
-	
-	@Test
-	public void testGetStockByID()
-	{		
-		Stock stock = stockRepo.getStockById(1);
-		assertThat(stock.getId()).isEqualTo(1);
-		
-	}
-	
-	
 }
-
-
+	
