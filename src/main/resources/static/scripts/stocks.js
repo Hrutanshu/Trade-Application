@@ -3,7 +3,11 @@
  */
 function getHistory()
 {
-	const url="http://localhost:8080/api/stock/history";
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	const url=`http://localhost:8080/api/stock/history/${userName}`;
 	fetch(url)//promise object to return data from Rest API
 
 		.then(response => { return response.json();}) //resolve , data from resolve is passed to next then
@@ -52,7 +56,11 @@ function getHistory()
 }
 function getHoldings()
 {
-	const url="http://localhost:8080/api/stock/holdings";
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	const url=`http://localhost:8080/api/stock/holdings/${userName}`;
 
 	fetch(url)//promise object to return data from Rest API
 		.then(response => { return response.json();}) //resolve , data from resolve is passed to next then
@@ -67,6 +75,8 @@ function getHoldings()
 					 temp += "<td>" + itemData.stockTicker + "</td>";
 					 temp += "<td>" + itemData.price + "</td>";
 					 temp += "<td>" + itemData.volume + "</td>";
+					 total = itemData.price * itemData.volume;
+					 temp += "<td>" + total + "</td>";
 					});
 				 document.getElementById('tbodyholdings').innerHTML = temp; //populate the html element with the ID of  tbodyShippers with TR tags
 				 }	
@@ -77,7 +87,11 @@ function getHoldings()
 
 }
 function getdata(){
-const url="http://localhost:8080/api/stock/holdings";
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+const url=`http://localhost:8080/api/stock/holdings/${userName}`;
 	var data = new google.visualization.DataTable();
   // Add columns
   data.addColumn('string', 'stockTicker');
@@ -107,8 +121,45 @@ var chart = new google.visualization.PieChart(document.getElementById('myChart')
 				
 }
 
+function searchHistory() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+  console.log(filter);
+  if(filter[0]=="0"|| filter[0] =="1"|| filter[0]=="3" || filter[0] =="2"){
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } }
+    else{
+    te = tr[i].getElementsByTagName("td")[2];
+    if (te) {
+      txtValue = te.textContent || te.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }    }  
+  }
+}
+
+
 function getline(){
-const url="http://localhost:8080/api/stock/history";
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	
+const url=`http://localhost:8080/api/stock/history/${userName}`;
 	var data = new google.visualization.DataTable();
   // Add columns
   data.addColumn('string', 'Date');

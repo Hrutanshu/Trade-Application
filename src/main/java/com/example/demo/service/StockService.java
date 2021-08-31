@@ -41,20 +41,25 @@ public class StockService {
 		return repository.deleteStock(id);
 	}
 
-	public String BuyStock(String stockTicker, int volume) {
-		return repository.buyStock(stockTicker, volume);
+	public String BuyStock(String userName, String stockTicker, int volume) {
+		System.out.println("service called");
+
+		String a= repository.buyStock(userName ,stockTicker, volume);
+		System.out.println(a);
+
+		return a; // repository.buyStock(userName ,stockTicker, volume);
 	}
 	
-	public String SellStock(String stockTicker, int volume) {
-		return repository.sellStock(stockTicker, volume);
+	public String SellStock(String stockTicker, int volume,  String userName) {
+		return repository.sellStock(stockTicker, volume, userName);
 	}
 	
-	public List<Holding>  holdings() {
-		return repository.holdings();
+	public List<Holding>  holdings(String userName) {
+		return repository.holdings( userName);
 	}
 	
-	public List<History> history() {
-		return repository.history();
+	public List<History> history(String userName) {
+		return repository.history( userName);
 	}
 	
 	public List<Map<String, Object>> dropDown1() {

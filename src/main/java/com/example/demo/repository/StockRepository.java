@@ -14,10 +14,10 @@ public interface StockRepository {
 	public Stock updateStock(Stock stock);
 	public int deleteStock(int id);
 	public Stock addStock(Stock stock);
-	public String buyStock(String stockTicker, int volume);
-	public String sellStock(String stockTicker, int volume);
-	public List<Holding>  holdings();
-	public List<History>  history();
+	public String buyStock(String userName, String stockTicker, int volume);
+	public String sellStock(String stockTicker, int volume, String userName);
+	public List<Holding>  holdings(String userName);
+	public List<History>  history(String userName);
 	public List<Map<String, Object>> dropDown1();
 	public String getTicker(int id);
 	public String login(String username, String pwd);

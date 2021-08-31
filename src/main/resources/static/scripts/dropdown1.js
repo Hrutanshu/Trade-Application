@@ -1,17 +1,4 @@
-/**
- * 
- */
- 
-function abc()
-{
- 	
-window.addEventListener('load',() => {
-	const params = (new URL (document.location)).searchParams;
-	const userName= params.get('name');
-	document.getElementById("nameuser").innertext=userName;
-	console.log(userName);
-})
-}
+
 
 
  function register()
@@ -54,22 +41,53 @@ window.addEventListener('load',() => {
   fetch(`http://localhost:8080/api/stock/login/${username}/${password}`, {
   method: 'GET'
 })
-.then((response) => { return response.json();})
+.then((response) => { return response.text();})
 .then(result =>
 	{
 	console.log(result);
 		if(result=="1")
  			{
  			 		alert("Login success");
- 			 			setTimeout(() => { console.log("success");}, 5000);
-
- 			window.location.href='/stocksrestapi.html?name=' + encodeURIComponent(username);
+ 					window.location.href='/stocksrestapi.html?name=' + encodeURIComponent(username);
  			}	
  			
  	else 
  		alert("Login Failed Try Again");
 	});
 	
+ }
+ 
+ function userdata1()
+ {
+
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	
+ 	window.location.href='/stocksrestapi.html?name=' + encodeURIComponent(userName);
+ }
+ 
+ function userdata2()
+ {
+
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	
+ 	window.location.href='/history.html?name=' + encodeURIComponent(userName);
+ }
+ 
+ function userdata3()
+ {
+
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	
+ 	window.location.href='/holdings.html?name=' + encodeURIComponent(userName);
  }
  
  function getStocks()
@@ -117,8 +135,15 @@ function dropDown1() {
 
 
 async function buy() {
+
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	
 var stringTicker;
-i = document.getElementById('dropdown1').value;
+// var user=document.getElementById('nameuser').value;
+var i = document.getElementById('dropdown1').value;
 volum = document.getElementById('volume').value;
 
 	console.log(i);
@@ -129,13 +154,15 @@ volum = document.getElementById('volume').value;
 				 name:dat,
 				 volume:volum
    };
-	alert(JSON.stringify(data));
-	fetch(`http://localhost:8080/api/stock/buy/${dat}/${data.volume}`, {
-  method: 'GET'
+	alert(JSON.stringify(data) + "Your order is getting processed") ;
+	
+	fetch(`http://localhost:8080/api/stock/buy/${userName}/${dat}/${data.volume}`, {
+  method: 'POST'
 })
 .then((response) => response.text())
 //Then with the data from the response in JSON...
 .then((data) => {
+
   console.log(data);
   alert(data);
   getStocks();
@@ -143,6 +170,13 @@ volum = document.getElementById('volume').value;
 }
 
 async function sell() {
+
+
+	const params = (new URL (document.location)).searchParams;
+	const userName= params.get('name');
+	// document.getElementById("nameuser").innerHTML=userName;
+	console.log(userName);
+	
 var stringTicker;
 i = document.getElementById('dropdown1').value;
 volum = document.getElementById('volume').value;
@@ -156,7 +190,7 @@ volum = document.getElementById('volume').value;
 					 volume:volum
 					   };
 	alert(JSON.stringify(data));
-	fetch(`http://localhost:8080/api/stock/sell/${dat}/${data.volume}`, {
+	fetch(`http://localhost:8080/api/stock/sell/${dat}/${data.volume}/${userName}`, {
   method: 'GET'
 })
 .then((response) => response.text())

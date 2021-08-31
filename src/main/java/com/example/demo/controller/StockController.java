@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.History;
@@ -64,25 +66,31 @@ public class StockController {
 		return service.deleteStock(id);
 	}
 	
-	 @GetMapping(value = "/buy/{stockTicker}/{volume}") 
-	 public String BuyStock(@PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume) { 
-		 return service.BuyStock(stockTicker, volume); 
+	
+	 @RequestMapping(value = "/buy/{userName}/{stockTicker}/{volume}", method = RequestMethod.POST) 
+	 public String BuyStock(@PathVariable ("userName") String userName, @PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume) throws MissingPathVariableException { 
+			System.out.println("controller called");
+
+		 String result=  service.BuyStock(userName, stockTicker, volume);
+		 System.out.println(result);
+		 return result; 
 	}
 	 
-	 @GetMapping(value = "/sell/{stockTicker}/{volume}") 
-	 public String SellStock(@PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume) { 
-		 return service.SellStock(stockTicker, volume); 
+	 @GetMapping(value = "/sell/{stockTicker}/{volume}/{userName}") 
+	 public String SellStock(@PathVariable ("stockTicker") String stockTicker, @PathVariable ("volume") int volume,
+			 @PathVariable ("userName") String userName) { 
+		 return service.SellStock(stockTicker, volume, userName); 
 	}
 	 
-	 @GetMapping(value = "/holdings") 
-	 public List<Holding>  Holdings() { 
-		 return service.holdings(); 
+	 @GetMapping(value = "/holdings/{userName}") 
+	 public List<Holding>  Holdings(@PathVariable ("userName") String userName) { 
+		 return service.holdings(userName); 
 	}
 	 
 	 
-	 @GetMapping(value = "/history") 
-	 public List<History>  history() { 
-		 return service.history(); 
+	 @GetMapping(value = "/history/{userName}") 
+	 public List<History>  history(@PathVariable ("userName") String userName) { 
+		 return service.history(userName); 
 	}
 	 
 	@GetMapping(value = "/dropDown1")
