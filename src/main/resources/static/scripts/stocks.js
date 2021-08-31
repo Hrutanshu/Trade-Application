@@ -17,7 +17,6 @@ function getHistory()
 				 var total;
 				 history.forEach((itemData) => {
 					 temp += "<tr>";
-					 temp += "<td>" + itemData.id + "</td>";
 					 temp += "<td>" + itemData.dateTime + "</td>";
 					 temp += "<td>" + itemData.stockTicker + "</td>";
 					 temp += "<td>" + itemData.price + "</td>";
