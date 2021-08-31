@@ -3,9 +3,6 @@ package com.example.demo.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.demo.entities.History;
@@ -85,8 +81,8 @@ class TestStockService {
 	@Test
 	public void testHistory() throws Exception {
 
-		when(stockService.history()).thenReturn(datalist2);
-		assertEquals(datalist2,stockService.history());
+		when(stockService.history("user")).thenReturn(datalist2);
+		assertEquals(datalist2,stockService.history("user"));
 	}
 	
 	@Test
@@ -101,9 +97,9 @@ class TestStockService {
 
 		datalist.add(holding);
 
-		when(stockService.holdings()).thenReturn(datalist);
+		when(stockService.holdings("user")).thenReturn(datalist);
 		
-		assertEquals(datalist,stockService.holdings());
+		assertEquals(datalist,stockService.holdings("user"));
 	}
 	@Test
 	public void testgetByID() throws Exception {
@@ -151,9 +147,10 @@ class TestStockService {
 		String stockTicker="AAPL";
 		int volume=10;
 		String result="Sold Successfully";
-		when(stockService.SellStock(stockTicker, volume)).thenReturn(result);
+		String user="user";
+		when(stockService.SellStock(stockTicker, volume, user)).thenReturn(result);
 
-		assertEquals(stockService.SellStock(stockTicker,volume),result);
+		assertEquals(stockService.SellStock(stockTicker,volume, user),result);
 	
 	}
 	
@@ -164,10 +161,33 @@ class TestStockService {
 		String stockTicker="AAPL";
 		int volume=10;
 		String result="Bought Successfully";
-		when(stockService.BuyStock(stockTicker, volume)).thenReturn(result);
-		assertEquals(stockService.BuyStock(stockTicker,volume),result);
+		String user="user";
+
+		when(stockService.BuyStock(user, stockTicker, volume)).thenReturn(result);
+		assertEquals(stockService.BuyStock(user ,stockTicker,volume),result);
 	
 	}
+	
+
+	@Test
+	public void testLogin() throws Exception
+	{
+		when(stockService.login("richa", "richa")).thenReturn("1");
+		assertEquals(stockService.login("richa", "richa"),"1");
+	}
+	
+
+	@Test
+	public void testRegister() throws Exception
+	{
+		String ans="1";
+		String name="richa";
+		String pwd="richa";
+		String mail="richa";
+		when(stockService.register(name,mail,pwd)).thenReturn(ans);
+		assertEquals(stockService.register(name,mail,pwd),ans);
+	}
+	
 	
 	@Test
 	public void testEditStock() throws Exception {

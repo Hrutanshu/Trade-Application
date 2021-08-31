@@ -39,7 +39,14 @@
   
   
   fetch(`http://localhost:8080/api/stock/login/${username}/${password}`, {
-  method: 'GET'
+  method: 'GET',
+  mode: 'same-origin', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  
 })
 .then((response) => { return response.text();})
 .then(result =>
@@ -53,6 +60,46 @@
  			
  	else 
  		alert("Login Failed Try Again");
+	})
+.catch(error => {
+		alert(error);
+	});
+	
+ }
+ 
+ 
+ 
+ function login2()
+ {
+  var username=document.getElementById("username").value;
+  var password=document.getElementById("password").value;
+  
+  
+  fetch(`http://localhost:8080/api/stock/login2/`, {
+  method: 'POST',
+  mode: 'same-origin', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  
+})
+.then((response) => { return response.text();})
+.then(result =>
+	{
+	console.log(result);
+		if(result=="1")
+ 			{
+ 			 		alert("Login success");
+ 					window.location.href='/stocksrestapi.html?name=' + encodeURIComponent(username);
+ 			}	
+ 			
+ 	else 
+ 		alert("Login Failed Try Again");
+	})
+.catch(error => {
+		alert(error);
 	});
 	
  }

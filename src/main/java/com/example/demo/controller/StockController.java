@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
+import com.example.demo.entities.userdata;
 import com.example.demo.service.StockService;
 
 @RestController
@@ -40,7 +41,18 @@ public class StockController {
 	@GetMapping(value="/login/{username}/{pwd}")
 	public String login(@PathVariable ("username") String username, @PathVariable ("pwd") String pwd)
 	{
+		System.out.println("controller called" + username + pwd);
+
 		return service.login(username,pwd);
+		
+	}
+	
+	@PostMapping(value="/login2/{username}/{pwd}")
+	public String login2(@RequestBody userdata u)
+	{
+		System.out.println("controller called" + u.getName() + u.getPassword());
+
+		return service.login2(u);
 		
 	}
 	

@@ -76,9 +76,9 @@ public class MySqlRepoMockTest {
 	
 	@Test
 	public void testHistory() throws Exception {
-
-		when(mySqlRepo.history()).thenReturn(datalist2);
-		assertEquals(datalist2,mySqlRepo.history());
+		String user="admin"; 
+		when(mySqlRepo.history(user)).thenReturn(datalist2);
+		assertEquals(datalist2,mySqlRepo.history(user));
 	}
 	
 	@Test
@@ -92,10 +92,11 @@ public class MySqlRepoMockTest {
 		holding.setVolume(900);
 
 		datalist.add(holding);
+		String user="admin";
 
-		when(mySqlRepo.holdings()).thenReturn(datalist);
+		when(mySqlRepo.holdings(user)).thenReturn(datalist);
 		
-		assertEquals(datalist,mySqlRepo.holdings());
+		assertEquals(datalist,mySqlRepo.holdings(user));
 	}
 	
 	@Test
@@ -155,8 +156,9 @@ public class MySqlRepoMockTest {
 		String stockTicker="AAPL";
 		int volume=10;
 		String result="Bought Successfully";
-		when(mySqlRepo.buyStock(stockTicker, volume)).thenReturn(result);
-		assertEquals(mySqlRepo.buyStock(stockTicker,volume),result);
+		String user ="admin";
+		when(mySqlRepo.buyStock(user, stockTicker, volume)).thenReturn(result);
+		assertEquals(mySqlRepo.buyStock(user, stockTicker,volume),result);
 	
 	}
 	
@@ -166,9 +168,10 @@ public class MySqlRepoMockTest {
 		String stockTicker="AAPL";
 		int volume=10;
 		String result="Sold Successfully";
-		when(mySqlRepo.sellStock(stockTicker, volume)).thenReturn(result);
+		String user="admin";
+		when(mySqlRepo.sellStock(stockTicker, volume,user)).thenReturn(result);
 
-		assertEquals(mySqlRepo.sellStock(stockTicker,volume),result);
+		assertEquals(mySqlRepo.sellStock(stockTicker,volume,user),result);
 	
 	}
 	

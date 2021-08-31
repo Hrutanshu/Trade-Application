@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
+import com.example.demo.entities.userdata;
 import com.example.demo.repository.StockRepository;
 
 
@@ -72,7 +73,14 @@ public class StockService {
 
 	public String login(String username, String pwd) {
 		// TODO Auto-generated method stub
+		System.out.println("service called" + username + pwd );
 		return repository.login(username,pwd);
+	}
+	
+	public String login2(userdata u) {
+		// TODO Auto-generated method stub
+		System.out.println("service called" + u.getName() + u.getPassword() );
+		return repository.login2( u);
 	}
 
 	public String register(String username, String pwd,String email) {

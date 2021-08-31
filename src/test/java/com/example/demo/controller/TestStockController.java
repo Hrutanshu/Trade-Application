@@ -58,7 +58,21 @@ class TestStockController {
 		mockmvc = MockMvcBuilders.standaloneSetup(stockController).build();
 	}
 	
+	@Test
+	public void testLogin() throws Exception
+	{
+		when(stockController.login("richa", "richa")).thenReturn("1");
+		assertEquals(stockController.login("richa", "richa"),"1");
+	}
+	
 
+	@Test
+	public void testRegister() throws Exception
+	{
+		when(stockController.register("richa","richa", "richa")).thenReturn("1");
+		assertEquals(stockController.register("richa", "richa" ,"richa"),"1");
+	}
+	
 	@Test
 	public void testAllStock() throws Exception {
 
@@ -97,10 +111,11 @@ class TestStockController {
 		history.setVolume(900);
 
 		datalist.add(history);
+		String user="user";
 
-		when(stockController.history()).thenReturn(datalist);
+		when(stockController.history(user)).thenReturn(datalist);
 
-		String URI = "/api/stock/history";
+		String URI = "/api/stock/history/user";
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON);
 
 		MvcResult result = mockmvc.perform(requestBuilder).andReturn();
@@ -122,10 +137,11 @@ class TestStockController {
 		holding.setVolume(900);
 
 		datalist.add(holding);
+		String user="user";
 
-		when(stockController.Holdings()).thenReturn(datalist);
+		when(stockController.Holdings(user)).thenReturn(datalist);
 
-		String URI = "/api/stock/holdings";
+		String URI = "/api/stock/holdings/user";
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON);
 
 		MvcResult result = mockmvc.perform(requestBuilder).andReturn();
@@ -184,12 +200,11 @@ class TestStockController {
 
 		String url="/api/stock/sell/AAPL/10";
 		String result="Sold Successfully";
-		when(stockController.SellStock(stockTicker, volume)).thenReturn(result);
+		String user="user";
 
-		MvcResult mvcResult = this.mockmvc.perform(get(url)).andDo(print()).andExpect(status().isOk())
-				.andReturn();
+		when(stockController.SellStock(stockTicker, volume,user)).thenReturn(result);
 
-		assertEquals(stockController.SellStock(stockTicker,volume),result);
+		assertEquals(stockController.SellStock(stockTicker,volume,user),result);
 	
 	}
 	
@@ -201,12 +216,10 @@ class TestStockController {
 
 		String url="/api/stock/buy/AAPL/10";
 		String result="Bought Successfully";
-		when(stockController.BuyStock(stockTicker, volume)).thenReturn(result);
+		String user="user";
 
-		MvcResult mvcResult = this.mockmvc.perform(get(url)).andDo(print()).andExpect(status().isOk())
-				.andReturn();
-
-		assertEquals(stockController.BuyStock(stockTicker,volume),result);
+		when(stockController.BuyStock(user, stockTicker, volume)).thenReturn(result);
+		assertEquals(stockController.BuyStock(user,stockTicker,volume),result);
 	
 	}
 	

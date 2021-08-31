@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
+import com.example.demo.entities.userdata;
 
 @Repository
 public class MySqlRepo implements StockRepository{
@@ -309,9 +310,25 @@ public class MySqlRepo implements StockRepository{
 	@Override
 	public String login(java.lang.String username, java.lang.String pwd) {
 		// TODO Auto-generated method stub
+		System.out.println("mysql called" + username + pwd);
+
 		String sql= "SELECT USERPASSWORD FROM USERDATA WHERE USERNAME=?";
 		String password=template.queryForObject(sql, String.class, username);
 		if(password.equals(pwd))
+			return "1";
+		else return "0";
+		
+	}
+	
+
+	@Override
+	public String login2(userdata u) {
+		// TODO Auto-generated method stub
+		System.out.println("mysql called" + u.getName()+" " +u.getPassword());
+
+		String sql= "SELECT USERPASSWORD FROM USERDATA WHERE USERNAME=?";
+		String password=template.queryForObject(sql, String.class, u.getName());
+		if(password.equals(u.getPassword()))
 			return "1";
 		else return "0";
 		
@@ -328,4 +345,5 @@ public class MySqlRepo implements StockRepository{
 		return "1";
 	}
 
+	
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.demo.entities.History;
 import com.example.demo.entities.Holding;
 import com.example.demo.entities.Stock;
+import com.example.demo.entities.userdata;
 
 public interface StockRepository {
 	
@@ -22,4 +23,5 @@ public interface StockRepository {
 	public String getTicker(int id);
 	public String login(String username, String pwd);
 	public String register(String username, String pwd, String email);
+	public String login2(userdata u);
 }
