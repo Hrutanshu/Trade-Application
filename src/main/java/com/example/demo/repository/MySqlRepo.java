@@ -102,7 +102,7 @@ public class MySqlRepo implements StockRepository{
 			int price=template.queryForObject(sql, Integer.class, stockTicker);
 			
 			Date d1 = new Date();
-			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			String date= sdf.format(d1);
 			
 			System.out.println("inerted into history");
@@ -117,7 +117,7 @@ public class MySqlRepo implements StockRepository{
 			int count = template.queryForObject(sql9, Integer.class);
 			System.out.println("history called called");
 
-			wait(15000);
+			wait(25000);
 
 			
 			String sql8 = "select status_code from history where id=?";
@@ -195,7 +195,7 @@ public class MySqlRepo implements StockRepository{
 		if(stockPresent==1 && dbVolume>=volume)
 		{
 			Date d1 = new Date();
-			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			String date= sdf.format(d1);
 
 			String sql6= "SELECT price FROM stocks WHERE STOCKTICKER=?";

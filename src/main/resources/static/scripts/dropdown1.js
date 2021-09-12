@@ -236,7 +236,7 @@ volum = document.getElementById('volume').value;
 					 name:dat,
 					 volume:volum
 					   };
-	alert(JSON.stringify(data));
+	alert(JSON.stringify(data) + "Your order is getting processed");
 	fetch(`http://localhost:8080/api/stock/sell/${dat}/${data.volume}/${userName}`, {
   method: 'GET'
 })

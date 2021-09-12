@@ -129,7 +129,7 @@ function searchHistory() {
   for (i = 0; i < tr.length; i++) {
   console.log(filter);
   if(filter[0]=="0"|| filter[0] =="1"|| filter[0]=="3" || filter[0] =="2"){
-    td = tr[i].getElementsByTagName("td")[1];
+    td = tr[i].getElementsByTagName("td")[0];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -139,7 +139,7 @@ function searchHistory() {
       }
     } }
     else{
-    te = tr[i].getElementsByTagName("td")[2];
+    te = tr[i].getElementsByTagName("td")[1];
     if (te) {
       txtValue = te.textContent || te.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
